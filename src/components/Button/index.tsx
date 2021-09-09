@@ -30,9 +30,15 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   prefixCls?: string;
 }
 
-const Button = ({ prefixCls = 'ts-btn', className, ...props }: ButtonProps) => {
-  return <button className={cx(prefixCls, className)} {...props} />;
-};
+const Button = React.forwardRef(
+  (
+    { prefixCls = 'ts-btn', className, ...props }: ButtonProps,
+    ref: React.Ref<HTMLButtonElement>,
+  ) => {
+    return <button ref={ref} className={cx(prefixCls, className)} {...props} />;
+  },
+);
+Button.displayName = 'Button';
 
 const ThemeButton = withTheme(Button, templateStyle);
 

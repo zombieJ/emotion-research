@@ -12,7 +12,7 @@ const customizeToken = {
 };
 
 export default function IndexPage() {
-  const btnRef = React.useRef();
+  const btnRef = React.useRef<HTMLButtonElement>(null);
   const [injectGlobal, setInjectGlobal] = React.useState(true);
 
   return (
@@ -31,7 +31,7 @@ export default function IndexPage() {
       <Button>Global Style</Button>
 
       <ThemeProvider theme={customizeToken}>
-        <Button>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
       </ThemeProvider>
 
       {injectGlobal && <Global styles={css(defaultGlobalStyle)} />}

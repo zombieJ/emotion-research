@@ -61,27 +61,30 @@ export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
 // ============================ With Theme ============================
 export type GetComponentStyle = (theme: ThemeVariables) => CSSInterpolation;
 
-export function withTheme<P extends {}>(
-  Component: React.ComponentType<P>,
+export function withTheme<Props extends {}, Refs extends {}>(
+  Component: React.ComponentType<Props>,
   styleGenerator: GetComponentStyle,
 ) {
   const StyledComponent = styled(Component, {
     shouldForwardProp: (prop) => prop !== '__internal_theme__',
   })((props: any) => styleGenerator(props.__internal_theme__ as any));
 
-  const Wrapper = React.forwardRef((props: P, ref: React.Ref<any>) => {
-    const theme = React.useContext(ThemeContext);
-    const MergeComponent = theme ? StyledComponent : Component;
+  const Wrapper = React.forwardRef<Refs, Props>(
+    (props: Props, ref: React.Ref<any>) => {
+      const theme = React.useContext(ThemeContext);
+      const MergeComponent = theme ? StyledComponent : Component;
 
-    const additionalProps: Record<string, any> = {
-      ref,
-    };
-    if (theme) {
-      additionalProps.__internal_theme__ = theme;
-    }
+      const additionalProps: Record<string, any> = {
+        ref,
+      };
+      if (theme) {
+        additionalProps.__internal_theme__ = theme;
+      }
 
-    return <MergeComponent {...props} {...additionalProps} />;
-  });
+      return <MergeComponent {...props} {...additionalProps} />;
+    },
+  );
+  Wrapper.displayName = 'ThemeWrapper';
 
   return Wrapper;
 }
