@@ -23,12 +23,13 @@ export default function IndexPage() {
         </label>
       </div>
 
-      {injectGlobal && <Global styles={css(defaultGlobalStyle)} />}
       <Button>Global Style</Button>
 
       <ThemeContext.Provider value={{ primaryColor: 'red' }}>
         <Button>Theme Style</Button>
       </ThemeContext.Provider>
+
+      {injectGlobal && <Global styles={css(defaultGlobalStyle)} />}
     </div>
   );
 }
