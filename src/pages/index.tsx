@@ -12,6 +12,7 @@ const customizeToken = {
 };
 
 export default function IndexPage() {
+  const btnRef = React.useRef();
   const [injectGlobal, setInjectGlobal] = React.useState(true);
 
   return (

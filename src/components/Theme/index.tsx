@@ -1,4 +1,6 @@
 import React from 'react';
+import { css, cx, CSSInterpolation } from '@emotion/css';
+import styled from '@emotion/styled';
 import { TinyColor } from '@ctrl/tinycolor';
 
 // =========================== Design Token ===========================
@@ -55,3 +57,31 @@ export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
     </ThemeContext.Provider>
   );
 };
+
+// ============================ With Theme ============================
+export type GetComponentStyle = (theme: ThemeVariables) => CSSInterpolation;
+
+export function withTheme<P extends {}>(
+  Component: React.ComponentType<P>,
+  styleGenerator: GetComponentStyle,
+) {
+  const StyledComponent = styled(Component, {
+    shouldForwardProp: (prop) => prop !== '__internal_theme__',
+  })((props: any) => styleGenerator(props.__internal_theme__ as any));
+
+  const Wrapper = React.forwardRef((props: P, ref: React.Ref<any>) => {
+    const theme = React.useContext(ThemeContext);
+    const MergeComponent = theme ? StyledComponent : Component;
+
+    const additionalProps: Record<string, any> = {
+      ref,
+    };
+    if (theme) {
+      additionalProps.__internal_theme__ = theme;
+    }
+
+    return <MergeComponent {...props} {...additionalProps} />;
+  });
+
+  return Wrapper;
+}

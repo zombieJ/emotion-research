@@ -1,7 +1,11 @@
 import React from 'react';
 import { css, cx, CSSInterpolation } from '@emotion/css';
-import styled from '@emotion/styled';
-import { defaultTheme, ThemeContext, ThemeVariables } from '../Theme';
+import {
+  defaultTheme,
+  ThemeContext,
+  ThemeVariables,
+  withTheme,
+} from '../Theme';
 
 export const templateStyle = (theme: ThemeVariables): CSSInterpolation => ({
   background: theme.primaryColor,
@@ -27,15 +31,9 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 }
 
 const Button = ({ prefixCls = 'ts-btn', className, ...props }: ButtonProps) => {
-  const theme = React.useContext(ThemeContext);
-
-  const memoStyle = React.useMemo(() => theme && templateStyle(theme), [theme]);
-
-  const Component = theme
-    ? styled('button')(defaultStyle, memoStyle)
-    : 'button';
-
-  return <Component className={cx(prefixCls, className)} {...props} />;
+  return <button className={cx(prefixCls, className)} {...props} />;
 };
 
-export default Button;
+const ThemeButton = withTheme(Button, templateStyle);
+
+export default ThemeButton;
