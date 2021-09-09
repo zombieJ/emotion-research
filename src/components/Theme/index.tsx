@@ -1,14 +1,57 @@
 import React from 'react';
+import { TinyColor } from '@ctrl/tinycolor';
 
-export const defaultTheme = {
+// =========================== Design Token ===========================
+const defaultToken = {
   primaryColor: 'blue',
   borderRadius: 4,
   fontSizeBase: 14,
-  primaryHoverColor: '#3333FF',
 };
 
-type ThemeKeys = keyof typeof defaultTheme;
+type DesignToken = keyof typeof defaultToken;
 
-export type ThemeContextProps = Partial<Record<ThemeKeys, string | number>>;
+type DesignTokens = Record<DesignToken, string | number>;
 
-export const ThemeContext = React.createContext<ThemeContextProps>({});
+// ============================= Provider =============================
+function themeByToken(token: DesignTokens) {
+  const primaryColor = new TinyColor(token.primaryColor);
+
+  return {
+    ...token,
+
+    // Calculation value
+    primaryHoverColor: primaryColor.clone().lighten(20).toRgbString(),
+    primaryActiveColor: primaryColor.clone().darken(10).toRgbString(),
+  };
+}
+
+export const defaultTheme = themeByToken(defaultToken);
+
+type ThemeVariable = keyof typeof defaultTheme;
+
+export type ThemeVariables = Record<ThemeVariable, string | number>;
+
+export const ThemeContext = React.createContext<ThemeVariables | null>(null);
+
+// ============================= Provider =============================
+export interface ThemeProviderProps {
+  theme: Partial<DesignTokens>;
+  children?: React.ReactNode;
+}
+
+export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
+  const mergedTheme = React.useMemo<ThemeVariables>(() => {
+    const mergedToken: DesignTokens = {
+      ...defaultToken,
+      ...theme,
+    };
+
+    return themeByToken(mergedToken);
+  }, [theme]);
+
+  return (
+    <ThemeContext.Provider value={mergedTheme}>
+      {children}
+    </ThemeContext.Provider>
+  );
+};

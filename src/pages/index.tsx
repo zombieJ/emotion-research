@@ -1,10 +1,14 @@
 import React from 'react';
 import { Global, css } from '@emotion/react';
 import Button, { defaultStyle } from '@/components/Button';
-import { ThemeContext } from '@/components/Theme';
+import { ThemeProvider } from '@/components/Theme';
 
 const defaultGlobalStyle = {
   '.ts-btn': defaultStyle,
+};
+
+const customizeToken = {
+  primaryColor: 'red',
 };
 
 export default function IndexPage() {
@@ -25,9 +29,9 @@ export default function IndexPage() {
 
       <Button>Global Style</Button>
 
-      <ThemeContext.Provider value={{ primaryColor: 'red' }}>
+      <ThemeProvider theme={customizeToken}>
         <Button>Theme Style</Button>
-      </ThemeContext.Provider>
+      </ThemeProvider>
 
       {injectGlobal && <Global styles={css(defaultGlobalStyle)} />}
     </div>
