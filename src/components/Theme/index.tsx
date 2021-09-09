@@ -2,6 +2,7 @@ import React from 'react';
 import { css, cx, CSSInterpolation } from '@emotion/css';
 import styled from '@emotion/styled';
 import { TinyColor } from '@ctrl/tinycolor';
+import StaticStyle from './StaticStyle';
 
 // =========================== Design Token ===========================
 const defaultToken = {
@@ -14,7 +15,7 @@ type DesignToken = keyof typeof defaultToken;
 
 type DesignTokens = Record<DesignToken, string | number>;
 
-// ============================= Provider =============================
+// ============================== Theme ===============================
 function themeByToken(token: DesignTokens) {
   const primaryColor = new TinyColor(token.primaryColor);
 
@@ -33,9 +34,9 @@ type ThemeVariable = keyof typeof defaultTheme;
 
 export type ThemeVariables = Record<ThemeVariable, string | number>;
 
+// ============================= Provider =============================
 export const ThemeContext = React.createContext<ThemeVariables | null>(null);
 
-// ============================= Provider =============================
 export interface ThemeProviderProps {
   theme: Partial<DesignTokens>;
   children?: React.ReactNode;
@@ -61,8 +62,12 @@ export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
 // ============================ With Theme ============================
 export type GetComponentStyle = (theme: ThemeVariables) => CSSInterpolation;
 
-export function withTheme<Props extends {}, Refs extends {}>(
+export function withTheme<
+  Props extends { prefixCls?: string },
+  Refs extends {},
+>(
   Component: React.ComponentType<Props>,
+  defaultPrefixCls: string,
   styleGenerator: GetComponentStyle,
 ) {
   const StyledComponent = styled(Component, {
@@ -70,9 +75,12 @@ export function withTheme<Props extends {}, Refs extends {}>(
   })((props: any) => styleGenerator(props.__internal_theme__ as any));
 
   const Wrapper = React.forwardRef<Refs, Props>(
-    (props: Props, ref: React.Ref<any>) => {
+    (
+      { prefixCls = defaultPrefixCls, ...props }: Props,
+      ref: React.Ref<any>,
+    ) => {
       const theme = React.useContext(ThemeContext);
-      const MergeComponent = theme ? StyledComponent : Component;
+      const MergeComponent: any = theme ? StyledComponent : Component;
 
       const additionalProps: Record<string, any> = {
         ref,
@@ -81,7 +89,23 @@ export function withTheme<Props extends {}, Refs extends {}>(
         additionalProps.__internal_theme__ = theme;
       }
 
-      return <MergeComponent {...props} {...additionalProps} />;
+      const node = (
+        <MergeComponent prefixCls={prefixCls} {...props} {...additionalProps} />
+      );
+
+      if (!theme) {
+        return (
+          <>
+            <StaticStyle
+              prefixCls={prefixCls}
+              styles={styleGenerator(defaultTheme)}
+            />
+            {node}
+          </>
+        );
+      }
+
+      return node;
     },
   );
   Wrapper.displayName = 'ThemeWrapper';

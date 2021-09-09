@@ -40,6 +40,6 @@ const Button = React.forwardRef(
 );
 Button.displayName = 'Button';
 
-const ThemeButton = withTheme(Button, templateStyle);
+const ThemeButton = withTheme(Button, 'rc-btn', templateStyle);
 
 export default ThemeButton;
