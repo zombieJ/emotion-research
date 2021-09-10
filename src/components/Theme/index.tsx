@@ -65,7 +65,10 @@ export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
 };
 
 // ============================ With Theme ============================
-export type GetComponentStyle = (theme: ThemeVariables) => CSSInterpolation;
+export type GetComponentStyle = (
+  theme: ThemeVariables,
+  prefixCls: string,
+) => CSSInterpolation;
 
 export function withTheme<
   Props extends { prefixCls?: string },
@@ -78,7 +81,10 @@ export function withTheme<
   const StyledComponent = styled(Component, {
     shouldForwardProp: (prop) => prop !== '__internal_theme__',
   })((props: any) => ({
-    [`.${props.prefixCls}&`]: styleGenerator(props.__internal_theme__ as any),
+    [`.${props.prefixCls}&`]: styleGenerator(
+      props.__internal_theme__ as any,
+      props.prefixCls,
+    ),
   }));
 
   const Wrapper = React.forwardRef<Refs, Props>(
@@ -104,7 +110,7 @@ export function withTheme<
 
       // 全局样式
       const cacheGlobal = React.useMemo(
-        () => (theme ? null : styleGenerator(defaultTheme)),
+        () => (theme ? null : styleGenerator(defaultTheme, prefixCls)),
         [theme, styleGenerator, defaultTheme],
       );
 

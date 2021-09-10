@@ -1,6 +1,6 @@
 import React from 'react';
 import { Global, css } from '@emotion/react';
-import Button, { defaultStyle } from '@/components/Button';
+import Button from '@/components/Button';
 import { ThemeProvider } from '@/components/Theme';
 
 const customizeToken = {

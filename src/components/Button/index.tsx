@@ -7,7 +7,10 @@ import {
   withTheme,
 } from '../Theme';
 
-export const templateStyle = (theme: ThemeVariables): CSSInterpolation => ({
+export const templateStyle = (
+  theme: ThemeVariables,
+  prefixCls: string,
+): CSSInterpolation => ({
   background: theme.primaryColor,
   borderRadius: theme.borderRadius,
   border: 0,
@@ -22,9 +25,11 @@ export const templateStyle = (theme: ThemeVariables): CSSInterpolation => ({
   '&:active': {
     background: theme.primaryActiveColor,
   },
-});
 
-export const defaultStyle = templateStyle(defaultTheme);
+  [`.${prefixCls}-content`]: {
+    boxShadow: '0 0 3px red',
+  },
+});
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
   prefixCls?: string;
@@ -32,10 +37,14 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
 
 const Button = React.forwardRef(
   (
-    { prefixCls = 'ts-btn', className, ...props }: ButtonProps,
+    { prefixCls = 'ts-btn', className, children, ...props }: ButtonProps,
     ref: React.Ref<HTMLButtonElement>,
   ) => {
-    return <button ref={ref} className={cx(prefixCls, className)} {...props} />;
+    return (
+      <button ref={ref} className={cx(prefixCls, className)} {...props}>
+        <span className={`${prefixCls}-content`}>{children}</span>
+      </button>
+    );
   },
 );
 Button.displayName = 'Button';

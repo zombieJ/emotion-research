@@ -1,6 +1,6 @@
 import React from 'react';
 import { Global, css } from '@emotion/react';
-import Button, { defaultStyle } from '@/components/Button';
+import Button from '@/components/Button';
 import { ThemeProvider, DesignTokens } from '@/components/Theme';
 
 const customizeToken: Partial<DesignTokens> = {
@@ -32,6 +32,17 @@ export default function IndexPage() {
 
       <ThemeProvider theme={customizeToken2}>
         <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
+        <Button ref={btnRef}>Theme Style</Button>
       </ThemeProvider>
 
       <h2>
@@ -46,9 +57,9 @@ export default function IndexPage() {
         </a>
       </h2>
 
-      <ThemeProvider theme={customizeToken2}>
+      {/* <ThemeProvider theme={customizeToken2}>
         <ThemeProvider theme={{ primaryColor }}>
-          {new Array(1000).fill(null).map((_, index) => (
+          {new Array(100).fill(null).map((_, index) => (
             <Button
               key={index}
               ref={btnRef}
@@ -58,7 +69,7 @@ export default function IndexPage() {
             </Button>
           ))}
         </ThemeProvider>
-      </ThemeProvider>
+      </ThemeProvider> */}
     </div>
   );
 }
