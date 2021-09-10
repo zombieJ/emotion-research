@@ -20,6 +20,14 @@ SSR 渲染节点后到 Client 渲染时没有给添加的节点去重导致页�
 
 https://github.com/emotion-js/emotion/issues/2472
 
+## 相较优势
+
+* 全自动样式注入，不再需要 babel-plugin-import
+* 统一 prefixCls，原始 css selector 对于所有主题组件皆可生效
+* Token 计算数值，组件实现接口细则
+* 主题混合 0 成本
+* IE11 又能了
+
 ## Getting Started
 
 Install dependencies,
