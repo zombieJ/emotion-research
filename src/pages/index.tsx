@@ -34,17 +34,28 @@ export default function IndexPage() {
         <Button ref={btnRef}>Theme Style</Button>
       </ThemeProvider>
 
+      <h2>
+        Dynamic Test with 1000 button
+        <a
+          onClick={() => {
+            setPrimaryColor(randomColor());
+          }}
+        >
+          (Random!)
+        </a>
+      </h2>
+
       <ThemeProvider theme={customizeToken2}>
         <ThemeProvider theme={{ primaryColor }}>
-          <Button
-            ref={btnRef}
-            style={{ boxShadow: '0 0 3px rgba(0,0,0,0.3)' }}
-            onClick={() => {
-              setPrimaryColor(randomColor());
-            }}
-          >
-            Click To Random Change Nest Theme
-          </Button>
+          {new Array(1000).fill(null).map((_, index) => (
+            <Button
+              key={index}
+              ref={btnRef}
+              style={{ boxShadow: '0 0 3px rgba(0,0,0,0.3)', margin: 4 }}
+            >
+              Dynamic Nest Theme
+            </Button>
+          ))}
         </ThemeProvider>
       </ThemeProvider>
     </div>
