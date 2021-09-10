@@ -35,7 +35,9 @@ type ThemeVariable = keyof typeof defaultTheme;
 export type ThemeVariables = Record<ThemeVariable, string | number>;
 
 // ============================= Provider =============================
-export const ThemeContext = React.createContext<ThemeVariables | null>(null);
+export const ThemeContext = React.createContext<ThemeVariables | undefined>(
+  undefined,
+);
 
 export interface ThemeProviderProps {
   theme: Partial<DesignTokens>;
@@ -81,28 +83,33 @@ export function withTheme<
       { prefixCls = defaultPrefixCls, ...props }: Props,
       ref: React.Ref<any>,
     ) => {
+      // 获取主题
       const theme = React.useContext(ThemeContext);
+
+      // 根据是否存在主题来选择组件
       const MergeComponent: any = theme ? StyledComponent : Component;
 
+      // 组件注入样式
       const additionalProps: Record<string, any> = {
         ref,
+        __internal_theme__: theme,
       };
-      if (theme) {
-        additionalProps.__internal_theme__ = theme;
-      }
 
       const node = (
         <MergeComponent prefixCls={prefixCls} {...props} {...additionalProps} />
+      );
+
+      // 全局样式
+      const cacheGlobal = React.useMemo(
+        () => (theme ? null : styleGenerator(defaultTheme)),
+        [theme, styleGenerator, defaultTheme],
       );
 
       // 没有主题就动态注入，组件多了感觉会有收集问题
       if (!theme) {
         return (
           <>
-            <StaticStyle
-              prefixCls={prefixCls}
-              styles={styleGenerator(defaultTheme)}
-            />
+            <StaticStyle prefixCls={prefixCls} styles={cacheGlobal} />
             {node}
           </>
         );

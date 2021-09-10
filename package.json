@@ -29,6 +29,7 @@
     "rc-util": "^5.13.2",
     "react": "17.x",
     "react-dom": "17.x",
+    "stylis": "^4.0.10",
     "umi": "^3.5.18"
   },
   "devDependencies": {
