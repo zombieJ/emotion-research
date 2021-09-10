@@ -20,6 +20,7 @@ function randomColor() {
 export default function IndexPage() {
   const btnRef = React.useRef<HTMLButtonElement>(null);
   const [primaryColor, setPrimaryColor] = React.useState('green');
+  const [renderTimes, setRenderTimes] = React.useState(1);
 
   return (
     <div style={{ padding: 24 }}>
@@ -32,17 +33,24 @@ export default function IndexPage() {
 
       <ThemeProvider theme={customizeToken2}>
         <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
-        <Button ref={btnRef}>Theme Style</Button>
+        {/* <Button
+          key={renderTimes}
+          ref={btnRef}
+          onClick={() => {
+            setRenderTimes((k) => k + 1);
+          }}
+        >
+          Theme Style {renderTimes}
+        </Button>
+        <Button
+          key={renderTimes + 1}
+          ref={btnRef}
+          onClick={() => {
+            setRenderTimes((k) => k + 1);
+          }}
+        >
+          Theme Style {renderTimes + 1}
+        </Button> */}
       </ThemeProvider>
 
       <h2>
@@ -57,7 +65,7 @@ export default function IndexPage() {
         </a>
       </h2>
 
-      {/* <ThemeProvider theme={customizeToken2}>
+      <ThemeProvider theme={customizeToken2}>
         <ThemeProvider theme={{ primaryColor }}>
           {new Array(100).fill(null).map((_, index) => (
             <Button
@@ -69,7 +77,7 @@ export default function IndexPage() {
             </Button>
           ))}
         </ThemeProvider>
-      </ThemeProvider> */}
+      </ThemeProvider>
     </div>
   );
 }
