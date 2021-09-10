@@ -1,5 +1,7 @@
 import React from 'react';
-import { Global } from '@emotion/react';
+import { Global, ThemeContext, withEmotionCache } from '@emotion/react';
+import canUseDom from 'rc-util/lib/Dom/canUseDom';
+import { serializeStyles } from '@emotion/serialize';
 import { CSSInterpolation, injectGlobal } from '@emotion/css';
 
 export interface StaticStyleProps {
@@ -7,33 +9,22 @@ export interface StaticStyleProps {
   styles: CSSInterpolation;
 }
 
-const prefixElements: Record<string, {}[]> = {};
+const isBrowser = canUseDom();
 
-export default function StaticStyle({ prefixCls, styles }: StaticStyleProps) {
-  injectGlobal({
+const StaticStyle = ({ prefixCls, styles }: StaticStyleProps) => {
+  const mergedStyle = {
     [`.${prefixCls}`]: styles,
-  });
+  };
 
-  return null;
-  // const [, forceUpdate] = React.useState({});
+  // Client
+  if (isBrowser) {
+    injectGlobal(mergedStyle);
 
-  // React.useLayoutEffect(() => {
-  //   const obj = {};
-  //   prefixElements[prefixCls] = prefixElements[prefixCls] || [];
-  //   prefixElements[prefixCls].push(obj);
+    return null;
+  }
 
-  //   return () => {
-  //     prefixElements[prefixCls] = prefixElements[prefixCls].filter(
-  //       (o) => o !== obj,
-  //     );
-  //   };
-  // }, []);
+  // Server
+  return <Global styles={mergedStyle} />;
+};
 
-  // return (
-  //   <Global
-  //     styles={{
-  //       [`.${prefixCls}`]: styles,
-  //     }}
-  //   />
-  // );
-}
+export default StaticStyle;
