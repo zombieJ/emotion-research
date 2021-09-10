@@ -54,7 +54,7 @@ export default function IndexPage() {
       </ThemeProvider>
 
       <h2>
-        Dynamic Test with 1000 button
+        Dynamic Test with lots of button
         <a
           style={{ userSelect: 'none' }}
           onClick={() => {
@@ -67,7 +67,7 @@ export default function IndexPage() {
 
       <ThemeProvider theme={customizeToken2}>
         <ThemeProvider theme={{ primaryColor }}>
-          {new Array(100).fill(null).map((_, index) => (
+          {new Array(250).fill(null).map((_, index) => (
             <Button
               key={index}
               ref={btnRef}
