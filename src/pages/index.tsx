@@ -19,7 +19,7 @@ function randomColor() {
 
 export default function IndexPage() {
   const btnRef = React.useRef<HTMLButtonElement>(null);
-  const [primaryColor, setPrimaryColor] = React.useState(randomColor());
+  const [primaryColor, setPrimaryColor] = React.useState('green');
 
   return (
     <div style={{ padding: 24 }}>
@@ -37,6 +37,7 @@ export default function IndexPage() {
       <h2>
         Dynamic Test with 1000 button
         <a
+          style={{ userSelect: 'none' }}
           onClick={() => {
             setPrimaryColor(randomColor());
           }}
