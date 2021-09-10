@@ -13,7 +13,7 @@ const defaultToken = {
 
 type DesignToken = keyof typeof defaultToken;
 
-type DesignTokens = Record<DesignToken, string | number>;
+export type DesignTokens = Record<DesignToken, string | number>;
 
 // ============================== Theme ===============================
 function themeByToken(token: DesignTokens) {
@@ -45,9 +45,12 @@ export interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ theme, children }: ThemeProviderProps) => {
+  const parentContext = React.useContext(ThemeContext);
+
   const mergedTheme = React.useMemo<ThemeVariables>(() => {
     const mergedToken: DesignTokens = {
       ...defaultToken,
+      ...parentContext,
       ...theme,
     };
 

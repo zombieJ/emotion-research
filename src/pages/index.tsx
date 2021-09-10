@@ -1,18 +1,20 @@
 import React from 'react';
 import { Global, css } from '@emotion/react';
 import Button, { defaultStyle } from '@/components/Button';
-import { ThemeProvider } from '@/components/Theme';
+import { ThemeProvider, DesignTokens } from '@/components/Theme';
 
-const customizeToken = {
+const customizeToken: Partial<DesignTokens> = {
   primaryColor: 'red',
 };
 
-const customizeToken2 = {
+const customizeToken2: Partial<DesignTokens> = {
   primaryColor: 'green',
+  fontSizeBase: 20,
 };
 
 function randomColor() {
-  return '#' + Math.random().toString(16).substr(2, 6);
+  const rnd = () => (Math.random() * 150).toFixed(0);
+  return `rgb(${rnd()},${rnd()},${rnd()})`;
 }
 
 export default function IndexPage() {
@@ -31,16 +33,19 @@ export default function IndexPage() {
       <ThemeProvider theme={customizeToken2}>
         <Button ref={btnRef}>Theme Style</Button>
       </ThemeProvider>
-      <ThemeProvider theme={{ primaryColor }}>
-        <Button
-          ref={btnRef}
-          style={{ boxShadow: '0 0 3px rgba(0,0,0,0.3)' }}
-          onClick={() => {
-            setPrimaryColor(randomColor());
-          }}
-        >
-          Click To Random Change
-        </Button>
+
+      <ThemeProvider theme={customizeToken2}>
+        <ThemeProvider theme={{ primaryColor }}>
+          <Button
+            ref={btnRef}
+            style={{ boxShadow: '0 0 3px rgba(0,0,0,0.3)' }}
+            onClick={() => {
+              setPrimaryColor(randomColor());
+            }}
+          >
+            Click To Random Change Nest Theme
+          </Button>
+        </ThemeProvider>
       </ThemeProvider>
     </div>
   );
