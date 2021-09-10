@@ -23,7 +23,7 @@ function themeByToken(token: DesignTokens) {
     ...token,
 
     // Calculation value
-    primaryHoverColor: primaryColor.clone().lighten(20).toRgbString(),
+    primaryHoverColor: primaryColor.clone().lighten(10).toRgbString(),
     primaryActiveColor: primaryColor.clone().darken(10).toRgbString(),
   };
 }
