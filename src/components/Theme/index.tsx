@@ -72,7 +72,9 @@ export function withTheme<
 ) {
   const StyledComponent = styled(Component, {
     shouldForwardProp: (prop) => prop !== '__internal_theme__',
-  })((props: any) => styleGenerator(props.__internal_theme__ as any));
+  })((props: any) => ({
+    [`.${props.prefixCls}&`]: styleGenerator(props.__internal_theme__ as any),
+  }));
 
   const Wrapper = React.forwardRef<Refs, Props>(
     (
@@ -93,6 +95,7 @@ export function withTheme<
         <MergeComponent prefixCls={prefixCls} {...props} {...additionalProps} />
       );
 
+      // 没有主题就动态注入，组件多了感觉会有收集问题
       if (!theme) {
         return (
           <>
