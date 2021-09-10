@@ -17,6 +17,13 @@ export default function IndexPage() {
   return (
     <div style={{ padding: 24 }}>
       <Button>Global Style</Button>
+      <Button>Global Style</Button>
+      <Button>Global Style</Button>
+      <Button>Global Style</Button>
+      <Button>Global Style</Button>
+      <Button>Global Style</Button>
+      <Button>Global Style</Button>
+      <Button>Global Style</Button>
 
       <ThemeProvider theme={customizeToken}>
         <Button ref={btnRef}>Theme Style</Button>
